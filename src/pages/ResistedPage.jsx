@@ -57,7 +57,7 @@ export default function ResistedPage() {
             <strong>Type 2:</strong> "Those who are earnestly purging away their sins, and who
             are progressing from good to better in the service of God our Lord."
           </p>
-          <p className="muted">
+          <p>
             The alternative — Type 1 — drifts from mortal sin to mortal sin without resisting.
             Today, you didn't.
           </p>

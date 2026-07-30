@@ -8,7 +8,7 @@ const easeSoft = [0.16, 1, 0.3, 1]
 const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
 export default function SettingsPage() {
-  const { user, profile } = useAuth()
+  const { user, profile, refreshProfile } = useAuth()
   const [reminderTime, setReminderTime] = useState(profile?.reminder_time?.slice(0, 5) ?? '')
   const [notifyPref, setNotifyPref] = useState(profile?.partner_notify_pref ?? 'all')
   const [journalMorning, setJournalMorning] = useState(profile?.journal_remind_morning ?? false)
@@ -37,6 +37,7 @@ export default function SettingsPage() {
         })
         .eq('id', user.id)
       if (err) throw err
+      await refreshProfile()
       setSaved(true)
     } catch (err) {
       setError(err.message)

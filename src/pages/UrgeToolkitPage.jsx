@@ -161,11 +161,17 @@ export default function UrgeToolkitPage() {
   const timer = useCountdown(TOTAL_TIMER_SECONDS)
 
   async function handleLog(outcome) {
+    if (outcome === 'slip') {
+      // Recovery owns the slip flow end-to-end (reflection, learning,
+      // connection, next action) and logs it itself -- don't log twice.
+      navigate('/recover')
+      return
+    }
     setBusy(true)
     setError(null)
     try {
       await logUrge(user.id, { trigger, outcome })
-      navigate(outcome === 'slip' ? '/slipped' : '/resisted')
+      navigate('/resisted')
     } catch (err) {
       setError(err.message)
     } finally {

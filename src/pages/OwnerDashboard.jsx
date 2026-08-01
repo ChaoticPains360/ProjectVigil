@@ -5,6 +5,7 @@ import { supabase } from '../supabaseClient'
 import { useAuth } from '../context/AuthContext'
 import Candle from '../components/Candle'
 import VerseCard from '../components/VerseCard'
+import SwipeShell from '../components/SwipeShell'
 
 const easeSoft = [0.16, 1, 0.3, 1]
 
@@ -33,7 +34,7 @@ export default function OwnerDashboard() {
   }, [load])
 
   return (
-    <div className="page">
+    <SwipeShell leftTo="/moment" rightTo="/journey" className="page">
       <motion.section
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -75,8 +76,8 @@ export default function OwnerDashboard() {
             <span>Reflect for a minute</span>
             <span className="home-action-arrow">→</span>
           </Link>
-          <Link to="/prep" className="home-action-row">
-            <span>Build your PREP plan</span>
+          <Link to="/journey" className="home-action-row">
+            <span>See your Journey</span>
             <span className="home-action-arrow">→</span>
           </Link>
           <Link to="/people" className="home-action-row">
@@ -94,6 +95,9 @@ export default function OwnerDashboard() {
       >
         Had a difficult moment already? <Link to="/recover">Come back →</Link>
       </motion.p>
-    </div>
+      <p className="home-swipe-hint muted">
+        Swipe left for The Moment · Swipe right for your Journey
+      </p>
+    </SwipeShell>
   )
 }

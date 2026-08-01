@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
-import NavBar from './components/NavBar'
-import StruggleButton from './components/StruggleButton'
+import TopBar from './components/TopBar'
+import BottomNav from './components/BottomNav'
 import AnimatedBackground from './components/AnimatedBackground'
 import AuthPage from './pages/AuthPage'
 import OwnerDashboard from './pages/OwnerDashboard'
@@ -10,14 +10,17 @@ import PartnerDashboard from './pages/PartnerDashboard'
 import AcceptInvitePage from './pages/AcceptInvitePage'
 import UrgeToolkitPage from './pages/UrgeToolkitPage'
 import SettingsPage from './pages/SettingsPage'
+import ProfilePage from './pages/ProfilePage'
 import JournalPage from './pages/JournalPage'
 import ResistedPage from './pages/ResistedPage'
 import StopPage from './pages/StopPage'
 import RecoveryPage from './pages/RecoveryPage'
 import PrepPage from './pages/PrepPage'
+import MomentHubPage from './pages/MomentHubPage'
+import JourneyPage from './pages/JourneyPage'
 
-// The Moment (STOP/Recovery) drops the normal chrome -- no nav, no
-// competing "I'm struggling" button -- so the experience stays simple
+// STOP/Recovery drop the normal chrome entirely -- no top bar, no
+// bottom nav -- so the experience stays simple and distraction-free
 // when someone is vulnerable right now.
 const BARE_ROUTES = ['/stop', '/recover']
 
@@ -38,8 +41,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <AnimatedBackground />
-      {!bare && <NavBar />}
-      {!bare && <StruggleButton />}
+      {!bare && <TopBar />}
       <Routes>
         <Route path="/login" element={<AuthPage />} />
         <Route
@@ -47,6 +49,30 @@ export default function App() {
           element={
             <RequireAuth>
               <OwnerDashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/moment"
+          element={
+            <RequireAuth>
+              <MomentHubPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/journey"
+          element={
+            <RequireAuth>
+              <JourneyPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <ProfilePage />
             </RequireAuth>
           }
         />
@@ -141,6 +167,7 @@ export default function App() {
           }
         />
       </Routes>
+      {!bare && <BottomNav />}
     </div>
   )
 }

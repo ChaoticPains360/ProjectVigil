@@ -24,7 +24,7 @@ export default function JourneyPage() {
   }
 
   return (
-    <SwipeShell leftTo="/" className="page">
+    <SwipeShell rightTo="/" className="page">
       <motion.section
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -92,7 +92,7 @@ export default function JourneyPage() {
         </motion.section>
       )}
 
-      <p className="home-quiet-link">Swipe left, or use the menu, to go back home.</p>
+      <p className="home-quiet-link">Swipe right, or use the menu, to go back home.</p>
     </SwipeShell>
   )
 }

@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vigil.twa",
+      "sha256_cert_fingerprints": [
+        "3D:AB:56:6E:DC:A0:33:42:61:17:19:BB:8E:9A:67:EC:FA:73:07:7C:AC:0C:61:97:61:28:CD:16:76:0C:97:9D"
+      ]
+    }
+  }
+]

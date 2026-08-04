@@ -7,8 +7,24 @@ function urlBase64ToUint8Array(base64String) {
   return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)))
 }
 
+function isIos() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent)
+}
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true
+}
+
 export async function enablePushNotifications(userId) {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    if (isIos() && !isStandalone()) {
+      throw new Error(
+        'On iPhone/iPad, notifications only work once Vigil is added to your Home Screen. Tap the Share icon, then "Add to Home Screen," then open Vigil from there and try again.'
+      )
+    }
+    if (isIos()) {
+      throw new Error('Notifications need iOS 16.4 or later. Update iOS, then try again.')
+    }
     throw new Error('Push notifications are not supported in this browser.')
   }
 

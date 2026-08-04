@@ -6,6 +6,9 @@ import { enablePushNotifications } from '../lib/push'
 
 const easeSoft = [0.16, 1, 0.3, 1]
 const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+const isIosNotInstalled =
+  /iphone|ipad|ipod/i.test(navigator.userAgent) &&
+  !(window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true)
 
 export default function SettingsPage() {
   const { user, profile, refreshProfile } = useAuth()
@@ -18,6 +21,8 @@ export default function SettingsPage() {
   const [error, setError] = useState(null)
   const [saved, setSaved] = useState(false)
   const [pushStatus, setPushStatus] = useState(null)
+  const [pushError, setPushError] = useState(null)
+  const [pushBusy, setPushBusy] = useState(false)
 
   async function saveSettings(e) {
     e.preventDefault()
@@ -48,12 +53,15 @@ export default function SettingsPage() {
 
   async function handleEnablePush() {
     setPushStatus(null)
-    setError(null)
+    setPushError(null)
+    setPushBusy(true)
     try {
       await enablePushNotifications(user.id)
       setPushStatus('Notifications enabled on this device.')
     } catch (err) {
-      setError(err.message)
+      setPushError(err.message)
+    } finally {
+      setPushBusy(false)
     }
   }
 
@@ -72,10 +80,22 @@ export default function SettingsPage() {
           Enable push notifications to receive your nightly reminder and (if you're a partner)
           alerts when someone you support logs an urge.
         </p>
-        <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={handleEnablePush}>
+        {isIosNotInstalled && (
+          <p className="onboarding-note">
+            On iPhone/iPad: tap the Share icon in Safari, then "Add to Home Screen." Notifications
+            only work once Vigil is opened from that Home Screen icon, not from a regular Safari tab.
+          </p>
+        )}
+        <motion.button
+          disabled={pushBusy}
+          whileHover={{ scale: pushBusy ? 1 : 1.03 }}
+          whileTap={{ scale: pushBusy ? 1 : 0.97 }}
+          onClick={handleEnablePush}
+        >
           Enable notifications
         </motion.button>
         {pushStatus && <p className="info">{pushStatus}</p>}
+        {pushError && <p className="error">{pushError}</p>}
       </motion.section>
 
       <motion.form

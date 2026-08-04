@@ -1688,44 +1688,50 @@ li.resisted .log-outcome {
 }
 
 /* =========================================================
-   Journey timeline
+   Journey: header + stage picker
    ========================================================= */
-.journey-timeline {
+.journey-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.journey-change-stage-btn {
+  background: var(--surface-strong);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.journey-picker {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding-left: 0.25rem;
+  gap: 0.6rem;
 }
 
-.journey-timeline-line {
-  position: absolute;
-  left: 21px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    var(--journey-purple-muted),
-    var(--recovery-clay)
-  );
-  opacity: 0.5;
-}
-
-.journey-stage {
+.journey-picker-item {
   position: relative;
   display: flex;
   align-items: flex-start;
   gap: 0.9rem;
-  padding: 0.75rem 0.75rem 0.75rem 0;
+  padding: 0.75rem;
   background: transparent;
   box-shadow: none;
   text-align: left;
   border-radius: var(--radius-md);
+  border: 1px solid var(--border);
 }
 
-.journey-stage.active {
-  background: rgba(111, 60, 194, 0.1);
+.journey-picker-item.active {
+  background: rgba(111, 60, 194, 0.12);
+  border-color: rgba(111, 60, 194, 0.4);
 }
 
 .journey-stage-dot {
@@ -1734,13 +1740,13 @@ li.resisted .log-outcome {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
-  margin-left: 12px;
+  margin-top: 0.15rem;
   border-radius: 50%;
   background: var(--bg-2);
   border: 2px solid var(--journey-purple-muted);
 }
 
-.journey-stage.active .journey-stage-dot {
+.journey-picker-item.active .journey-stage-dot {
   background: var(--journey-purple);
   border-color: var(--warm-light);
   box-shadow: 0 0 0 4px rgba(111, 60, 194, 0.25);
@@ -1750,12 +1756,11 @@ li.resisted .log-outcome {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding-top: 0.05rem;
 }
 
 .journey-stage-label {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -1765,11 +1770,47 @@ li.resisted .log-outcome {
   font-size: 0.85rem;
 }
 
-.journey-stage-goal {
-  margin-top: 0.4rem;
+/* =========================================================
+   Journey: active stage detail (the default landing view)
+   ========================================================= */
+.journey-stage-detail {
+  background:
+    linear-gradient(135deg, rgba(111, 60, 194, 0.14), transparent),
+    var(--surface);
+  border-color: rgba(111, 60, 194, 0.3);
+}
+
+.journey-stage-detail-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--journey-purple-muted);
+  margin-bottom: 0.3rem;
+}
+
+.journey-stage-detail-label {
+  font-size: 2rem;
+  margin-bottom: 0.15rem;
+}
+
+.journey-stage-detail-tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 0.7rem;
+}
+
+.journey-stage-detail-goal {
   color: var(--warm-light);
-  font-size: 0.85rem;
-  line-height: 1.5;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin-bottom: 1.1rem;
+}
+
+.journey-stage-links {
+  border-top: 1px solid var(--border);
+  padding-top: 0.85rem;
 }
 
 /* =========================================================

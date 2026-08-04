@@ -30,7 +30,7 @@ function NavButton({ active, onClick, label, Icon, holdProps }) {
 }
 
 export default function BottomNav() {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -94,7 +94,9 @@ export default function BottomNav() {
   }
 
   if (zone === 'journey') {
-    const stageKey = searchParams.get('stage') || (location.pathname.startsWith('/restore') ? 'restore' : 'reveal')
+    const stageKey =
+      searchParams.get('stage') ||
+      (location.pathname.startsWith('/restore') ? 'restore' : profile?.journey_stage || 'reveal')
     const stage = JOURNEY_STAGES.find((s) => s.key === stageKey) ?? JOURNEY_STAGES[0]
     return (
       <nav className="bottom-nav" aria-label={`${stage.label} resources`}>

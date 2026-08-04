@@ -7,7 +7,7 @@ const easeSoft = [0.16, 1, 0.3, 1]
 
 export default function MomentHubPage() {
   return (
-    <SwipeShell rightTo="/" className="page">
+    <SwipeShell leftTo="/" className="page">
       <motion.section
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ export default function MomentHubPage() {
         </motion.div>
       ))}
 
-      <p className="home-quiet-link">Swipe right, or use the menu, to go back home.</p>
+      <p className="home-quiet-link">Swipe left, or use the menu, to go back home.</p>
     </SwipeShell>
   )
 }

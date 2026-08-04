@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
-import { MenuIcon, BackHomeIcon, UserIcon, GearIcon } from './icons'
+import { MenuIcon, BackHomeIcon, UserIcon, GearIcon, StopIcon } from './icons'
 
 const easeSoft = [0.16, 1, 0.3, 1]
 
@@ -18,6 +18,18 @@ export default function TopBar() {
   return (
     <header className="top-bar">
       <div className="top-bar-left">
+        {/* Always in view, on every screen: someone in crisis should
+            never have to hunt for a gesture to find this. */}
+        <motion.button
+          type="button"
+          className="top-bar-stop-btn"
+          onClick={() => navigate('/stop')}
+          whileTap={{ scale: 0.95 }}
+          aria-label="I'm struggling — go to Stop now"
+        >
+          <StopIcon width={16} height={16} aria-hidden="true" />
+          Stop
+        </motion.button>
         {showHomeReturn && (
           <button
             type="button"

@@ -1,13 +1,23 @@
 import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { supabase } from '../supabaseClient'
+import { useAuth } from '../context/AuthContext'
 import SwipeShell from '../components/SwipeShell'
 import { JOURNEY_STAGES } from '../lib/resources'
 
 const easeSoft = [0.16, 1, 0.3, 1]
 
 export default function JourneyPage() {
+  const { user, profile } = useAuth()
   const [searchParams, setSearchParams] = useSearchParams()
-  const activeKey = searchParams.get('stage') || 'reveal'
+  const activeKey = searchParams.get('stage') || profile?.journey_stage || 'reveal'
+
+  function selectStage(key) {
+    setSearchParams({ stage: key })
+    // Best-effort: lets the nightly reminder speak to whichever stage
+    // someone is actually focused on. Never blocks the UI on this.
+    supabase.from('profiles').update({ journey_stage: key }).eq('id', user.id).then(() => {})
+  }
 
   return (
     <SwipeShell leftTo="/" className="page">
@@ -30,7 +40,7 @@ export default function JourneyPage() {
               key={stage.key}
               type="button"
               className={`journey-stage${active ? ' active' : ''}`}
-              onClick={() => setSearchParams({ stage: stage.key })}
+              onClick={() => selectStage(stage.key)}
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.05 + i * 0.06, ease: easeSoft }}

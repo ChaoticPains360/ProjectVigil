@@ -16,6 +16,7 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import webpush from 'npm:web-push@3.6.7'
+import { pickMessage } from '../_shared/messages.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -50,7 +51,7 @@ Deno.serve(async () => {
 
   const { data: profiles, error } = await admin
     .from('profiles')
-    .select('id, reminder_time, reminder_timezone, last_reminded_on')
+    .select('id, reminder_time, reminder_timezone, last_reminded_on, journey_stage')
     .not('reminder_time', 'is', null)
 
   if (error) {
@@ -58,6 +59,11 @@ Deno.serve(async () => {
   }
 
   const now = new Date()
+  const dayOfYear = Math.floor(
+    (Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) -
+      Date.UTC(now.getUTCFullYear(), 0, 0)) /
+      86400000
+  )
   let remindedCount = 0
 
   for (const profile of profiles ?? []) {
@@ -76,7 +82,7 @@ Deno.serve(async () => {
 
     const payload = JSON.stringify({
       title: 'Vigil',
-      body: 'Time for your nightly check-in.',
+      body: pickMessage(profile.journey_stage, dayOfYear),
       url: '/',
     })
 

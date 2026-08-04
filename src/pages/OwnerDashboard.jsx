@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { supabase } from '../supabaseClient'
 import { useAuth } from '../context/AuthContext'
+import { prepCommitments } from '../lib/prep'
 import Candle from '../components/Candle'
 import VerseCard from '../components/VerseCard'
 import SwipeShell from '../components/SwipeShell'
@@ -16,17 +17,26 @@ function greeting() {
   return 'Good evening'
 }
 
+function dayOfYear() {
+  const now = new Date()
+  const start = new Date(now.getFullYear(), 0, 0)
+  return Math.floor((now - start) / 86400000)
+}
+
 export default function OwnerDashboard() {
   const { user, profile } = useAuth()
   const [streak, setStreak] = useState(null)
+  const [todaysPractice, setTodaysPractice] = useState(null)
 
   const load = useCallback(async () => {
-    const { data: streakRow } = await supabase
-      .from('streaks')
-      .select('*')
-      .eq('user_id', user.id)
-      .maybeSingle()
+    const [{ data: streakRow }, commitments] = await Promise.all([
+      supabase.from('streaks').select('*').eq('user_id', user.id).maybeSingle(),
+      prepCommitments.list(user.id).catch(() => []),
+    ])
     setStreak(streakRow)
+    if (commitments?.length) {
+      setTodaysPractice(commitments[dayOfYear() % commitments.length])
+    }
   }, [user.id])
 
   useEffect(() => {
@@ -55,6 +65,18 @@ export default function OwnerDashboard() {
         <Candle streak={streak?.streak ?? 0} size={160} />
         <p className="muted">A light, not a scoreboard. Consistency matters more than any single number.</p>
       </motion.section>
+
+      {todaysPractice && (
+        <motion.section
+          className="card today-practice-card"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.045, ease: easeSoft }}
+        >
+          <p className="today-practice-label">Today's practice</p>
+          <p className="today-practice-body">{todaysPractice.label}</p>
+        </motion.section>
+      )}
 
       <motion.div
         initial={{ opacity: 0, y: 12 }}

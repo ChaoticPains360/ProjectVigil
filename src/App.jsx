@@ -18,6 +18,7 @@ import RecoveryPage from './pages/RecoveryPage'
 import PrepPage from './pages/PrepPage'
 import MomentHubPage from './pages/MomentHubPage'
 import JourneyPage from './pages/JourneyPage'
+import OnboardingPage from './pages/OnboardingPage'
 
 // STOP/Recovery drop the normal chrome entirely -- no top bar, no
 // bottom nav -- so the experience stays simple and distraction-free
@@ -32,11 +33,30 @@ function RequireAuth({ children }) {
 }
 
 export default function App() {
-  const { loading } = useAuth()
+  const { user, profile, loading } = useAuth()
   const location = useLocation()
   const bare = BARE_ROUTES.some((path) => location.pathname.startsWith(path))
 
   if (loading) return <div className="page">Loading...</div>
+
+  // Gate the whole app behind onboarding until it's done, rather than
+  // wiring this into every individual route -- one place to reason
+  // about, and it can't be bypassed by a direct URL to another page.
+  // This branch owns BOTH showing /onboarding itself AND redirecting
+  // any other path there, so the chrome-free shell always applies
+  // while onboarding is incomplete -- not just during the redirect.
+  const needsOnboarding = user && profile && !profile.onboarded_at
+  if (needsOnboarding) {
+    return (
+      <div className="app-shell">
+        <AnimatedBackground />
+        <Routes>
+          <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="*" element={<Navigate to="/onboarding" replace />} />
+        </Routes>
+      </div>
+    )
+  }
 
   return (
     <div className="app-shell">
@@ -44,6 +64,14 @@ export default function App() {
       {!bare && <TopBar />}
       <Routes>
         <Route path="/login" element={<AuthPage />} />
+        <Route
+          path="/onboarding"
+          element={
+            <RequireAuth>
+              <OnboardingPage />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/"
           element={

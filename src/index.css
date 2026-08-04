@@ -134,7 +134,21 @@ a {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 0.4rem;
   min-height: 40px;
+}
+
+.top-bar-stop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--action-ember), #b96d1a);
+  color: #1a0d00;
+  font-weight: 700;
+  font-size: 0.82rem;
+  box-shadow: 0 4px 16px -6px rgba(216, 137, 36, 0.6);
 }
 
 .top-bar-icon-btn {
@@ -1245,6 +1259,28 @@ li.resisted .log-outcome {
   font-size: 0.85rem;
 }
 
+.today-practice-card {
+  background:
+    linear-gradient(135deg, rgba(111, 60, 194, 0.12), transparent),
+    var(--surface);
+  border-color: rgba(111, 60, 194, 0.3);
+}
+
+.today-practice-label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--journey-purple-muted);
+  margin-bottom: 0.3rem;
+}
+
+.today-practice-body {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
 .home-quiet-link a {
   color: var(--recovery-clay);
   font-weight: 600;
@@ -1665,4 +1701,90 @@ li.resisted .log-outcome {
   color: var(--warm-light);
   font-size: 0.85rem;
   line-height: 1.5;
+}
+
+/* =========================================================
+   Onboarding
+   ========================================================= */
+.onboarding-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom, 0px));
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.onboarding-skip {
+  position: fixed;
+  top: calc(1rem + env(safe-area-inset-top, 0px));
+  right: 1rem;
+  z-index: 5;
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.onboarding-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.onboarding-title {
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.onboarding-body {
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+.onboarding-note {
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: rgba(216, 137, 36, 0.1);
+  border: 1px solid rgba(216, 137, 36, 0.25);
+  color: var(--warm-light);
+  font-size: 0.88rem;
+}
+
+.onboarding-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.onboarding-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.onboarding-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.onboarding-dot.active {
+  background: var(--action-ember);
+  width: 20px;
+  border-radius: var(--radius-full);
+  transition: width var(--dur-medium) var(--ease-soft);
+}
+
+.onboarding-footer .stop-primary-btn {
+  width: 100%;
+  max-width: 280px;
 }

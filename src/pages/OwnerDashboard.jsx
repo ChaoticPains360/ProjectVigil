@@ -44,7 +44,7 @@ export default function OwnerDashboard() {
   }, [load])
 
   return (
-    <SwipeShell leftTo="/journey" rightTo="/moment" className="page">
+    <SwipeShell leftTo="/moment" rightTo="/journey" className="page">
       <motion.section
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -118,7 +118,8 @@ export default function OwnerDashboard() {
         Had a difficult moment already? <Link to="/recover">Come back →</Link>
       </motion.p>
       <p className="home-swipe-hint muted">
-        Swipe left for your Journey · Swipe right for The Moment
+        <span>← The Moment</span>
+        <span>Journey →</span>
       </p>
     </SwipeShell>
   )

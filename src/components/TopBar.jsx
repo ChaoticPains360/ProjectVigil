@@ -34,8 +34,8 @@ export default function TopBar() {
           <button
             type="button"
             className="top-bar-icon-btn"
-            onClick={() => navigate('/')}
-            aria-label="Back to home"
+            onClick={() => navigate(-1)}
+            aria-label="Go back"
           >
             <BackHomeIcon width={22} height={22} />
           </button>

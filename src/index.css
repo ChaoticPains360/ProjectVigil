@@ -1683,8 +1683,11 @@ li.resisted .log-outcome {
 }
 
 .home-swipe-hint {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 0.78rem;
+  padding: 0 0.25rem;
 }
 
 /* =========================================================

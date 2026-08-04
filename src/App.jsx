@@ -18,6 +18,7 @@ import RecoveryPage from './pages/RecoveryPage'
 import PrepPage from './pages/PrepPage'
 import MomentHubPage from './pages/MomentHubPage'
 import JourneyPage from './pages/JourneyPage'
+import RestorePage from './pages/RestorePage'
 import OnboardingPage from './pages/OnboardingPage'
 
 // STOP/Recovery drop the normal chrome entirely -- no top bar, no
@@ -93,6 +94,14 @@ export default function App() {
           element={
             <RequireAuth>
               <JourneyPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/restore"
+          element={
+            <RequireAuth>
+              <RestorePage />
             </RequireAuth>
           }
         />

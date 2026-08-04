@@ -20,7 +20,7 @@ export const JOURNEY_STAGES = [
     tagline: 'Rebuild the life around the struggle.',
     goal: 'Choose small, specific practices across your relationships, body, mind, emotions, and faith.',
     links: [
-      { label: 'My commitments', to: '/prep', icon: 'prep' },
+      { label: 'My practices', to: '/restore', icon: 'restore' },
       { label: 'Stay connected', to: '/people', icon: 'people' },
       { label: 'Reflect', to: '/journal', icon: 'journal' },
     ],

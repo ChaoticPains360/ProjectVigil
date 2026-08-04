@@ -7,6 +7,23 @@ import EmotionPicker from '../components/EmotionPicker'
 
 const easeSoft = [0.16, 1, 0.3, 1]
 
+const PROMPTS = [
+  'What has been hardest today?',
+  'What were you trying not to feel?',
+  'Where did you feel most alive today?',
+  'Where did you feel disconnected?',
+  'What did you need?',
+  'What helped?',
+  'What do you want tomorrow to look like?',
+]
+
+function todaysPrompt() {
+  const now = new Date()
+  const start = new Date(now.getFullYear(), 0, 0)
+  const day = Math.floor((now - start) / 86400000)
+  return PROMPTS[day % PROMPTS.length]
+}
+
 export default function JournalPage() {
   const { user } = useAuth()
   const [emotions, setEmotions] = useState([])
@@ -16,6 +33,7 @@ export default function JournalPage() {
   const [entries, setEntries] = useState([])
   const [logs, setLogs] = useState([])
   const [loading, setLoading] = useState(true)
+  const [prompt] = useState(todaysPrompt)
 
   const load = useCallback(async () => {
     const [{ data: entryRows, error: entryErr }, { data: logRows, error: logErr }] =
@@ -88,11 +106,16 @@ export default function JournalPage() {
             transition={{ duration: 0.35, ease: easeSoft }}
           >
             <h3>Feeling {emotions.join(', ').toLowerCase()} — what's going on?</h3>
+            {!body && (
+              <button type="button" className="journal-prompt-chip" onClick={() => setBody(prompt + ' ')}>
+                Try: “{prompt}”
+              </button>
+            )}
             <p className="muted">Markdown supported: **bold**, *italic*, lists, etc.</p>
             <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              placeholder="Write whatever's true right now..."
+              placeholder={prompt}
             />
             <div className="button-row">
               <motion.button

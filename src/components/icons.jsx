@@ -57,6 +57,15 @@ export function StopIcon(props) {
   )
 }
 
+export function RestoreIcon(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 20.5c-4-2.5-4-7-4-9.5 1.5 1 3 1 4-1 1 2 2.5 2 4 1 0 2.5 0 7-4 9.5" />
+      <path d="M12 11v9.5" />
+    </svg>
+  )
+}
+
 export function RecoverIcon(props) {
   return (
     <svg {...base} {...props}>

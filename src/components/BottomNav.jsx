@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { JournalIcon, HomeIcon, PeopleIcon, PrepIcon, StopIcon, RecoverIcon } from './icons'
+import { JournalIcon, HomeIcon, PeopleIcon, PrepIcon, StopIcon, RecoverIcon, RestoreIcon } from './icons'
 import { JOURNEY_STAGES } from '../lib/resources'
 import { useAuth } from '../context/AuthContext'
 
@@ -9,11 +9,11 @@ const HOLD_MS = 3000
 
 function zoneFor(pathname) {
   if (pathname.startsWith('/moment') || pathname.startsWith('/prep')) return 'moment'
-  if (pathname.startsWith('/journey')) return 'journey'
+  if (pathname.startsWith('/journey') || pathname.startsWith('/restore')) return 'journey'
   return 'home'
 }
 
-const ICONS = { journal: JournalIcon, prep: PrepIcon, people: PeopleIcon, stop: StopIcon }
+const ICONS = { journal: JournalIcon, prep: PrepIcon, people: PeopleIcon, stop: StopIcon, restore: RestoreIcon }
 
 function NavButton({ active, onClick, label, Icon, holdProps }) {
   return (
@@ -94,7 +94,7 @@ export default function BottomNav() {
   }
 
   if (zone === 'journey') {
-    const stageKey = searchParams.get('stage') || 'reveal'
+    const stageKey = searchParams.get('stage') || (location.pathname.startsWith('/restore') ? 'restore' : 'reveal')
     const stage = JOURNEY_STAGES.find((s) => s.key === stageKey) ?? JOURNEY_STAGES[0]
     return (
       <nav className="bottom-nav" aria-label={`${stage.label} resources`}>

@@ -1,12 +1,26 @@
 # Getting Vigil onto the Google Play Store
 
 Vigil is already a fully spec'd installable PWA (manifest with proper
-192/512 + maskable icons, a service worker, HTTPS via Vercel). That's
-the hard technical part, and it's done. What's left is packaging it as
-an Android app and publishing it — and one step of that (building the
-signed Android App Bundle) needs a toolchain this environment doesn't
-have: no Java/Android SDK here, so I can't produce the `.aab` file
-myself. Here's the path to finish it, no local install required.
+192/512 + maskable icons, a service worker, HTTPS via Vercel).
+
+**Update:** a signed, installable Android APK now exists — built
+locally in `android-build/` (JDK 17 + Android SDK cmdline-tools were
+downloaded and wired up directly, bypassing Bubblewrap's broken
+interactive/JDK-installer paths). That proves the whole toolchain
+works end to end. `Vigil.apk` there is a **sideload build** signed
+with a throwaway keystore (`android-build/android.keystore`, alias
+`android`, password `android`) generated just for this — it is not
+suitable for Play Store submission, which needs a signing key you
+control and keep permanently (losing it means you can never update
+the app again under the same listing).
+
+For an actual Play Store submission, the cleanest path is still
+PWABuilder (step 1 below) since it manages key generation/storage for
+you properly. If you'd rather I build the `.aab` directly using this
+same local toolchain with a real, permanent keystore, say so and I
+will — just flagging that the keystore file and its password would
+then be something you need to store safely yourself (I can hand it
+to you, but I can't be the one safekeeping it long-term).
 
 ## 1. Generate the Android package (free, no coding, no local SDK)
 

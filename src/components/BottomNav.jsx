@@ -7,12 +7,6 @@ import { useAuth } from '../context/AuthContext'
 
 const HOLD_MS = 3000
 
-function zoneFor(pathname) {
-  if (pathname.startsWith('/moment') || pathname.startsWith('/prep')) return 'moment'
-  if (pathname.startsWith('/journey') || pathname.startsWith('/restore')) return 'journey'
-  return 'home'
-}
-
 const ICONS = { journal: JournalIcon, prep: PrepIcon, people: PeopleIcon, stop: StopIcon, restore: RestoreIcon }
 
 function NavButton({ active, onClick, label, Icon, holdProps }) {
@@ -29,12 +23,11 @@ function NavButton({ active, onClick, label, Icon, holdProps }) {
   )
 }
 
-export default function BottomNav() {
+export default function BottomNav({ zone }) {
   const { user, profile } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const zone = zoneFor(location.pathname)
   const [holding, setHolding] = useState(false)
   const timerRef = useRef(null)
   const firedRef = useRef(false)

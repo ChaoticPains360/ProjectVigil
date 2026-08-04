@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import TopBar from './components/TopBar'
@@ -26,6 +27,18 @@ import OnboardingPage from './pages/OnboardingPage'
 // when someone is vulnerable right now.
 const BARE_ROUTES = ['/stop', '/recover']
 
+// Pages that "belong" to a zone and should switch the bottom nav to
+// it. Shared destinations (Journal, People, Settings, Profile, etc.)
+// are deliberately NOT listed here -- visiting them from inside the
+// Moment or Journey shouldn't snap the bottom nav back to Home; it
+// should only change when the user actually goes to one of these.
+function zoneForPath(pathname) {
+  if (pathname === '/') return 'home'
+  if (pathname.startsWith('/moment') || pathname.startsWith('/prep')) return 'moment'
+  if (pathname.startsWith('/journey') || pathname.startsWith('/restore')) return 'journey'
+  return null
+}
+
 function RequireAuth({ children }) {
   const { user, loading } = useAuth()
   if (loading) return <div className="page">Loading...</div>
@@ -37,6 +50,16 @@ export default function App() {
   const { user, profile, loading } = useAuth()
   const location = useLocation()
   const bare = BARE_ROUTES.some((path) => location.pathname.startsWith(path))
+
+  // Sticky bottom-nav zone: only changes on an "anchor" route (Home,
+  // Moment, Journey/Restore). Navigating to a shared page like Journal
+  // or People from inside the Journey keeps the Journey's bottom nav
+  // showing, rather than reverting to Home's.
+  const [zone, setZone] = useState('home')
+  useEffect(() => {
+    const next = zoneForPath(location.pathname)
+    if (next) setZone(next)
+  }, [location.pathname])
 
   if (loading) return <div className="page">Loading...</div>
 
@@ -204,7 +227,7 @@ export default function App() {
           }
         />
       </Routes>
-      {!bare && <BottomNav />}
+      {!bare && <BottomNav zone={zone} />}
     </div>
   )
 }
